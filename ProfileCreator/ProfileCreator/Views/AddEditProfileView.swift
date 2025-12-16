@@ -1,4 +1,5 @@
 import SwiftUI
+import PhotosUI
 
 struct AddEditProfileView: View {
     let platform: StreamingPlatform
@@ -9,8 +10,12 @@ struct AddEditProfileView: View {
 
     @State private var name: String = ""
     @State private var selectedAvatar: String = ""
+    @State private var avatarType: AvatarType = .emoji
+    @State private var avatarImageData: Data?
     @State private var isKidsProfile: Bool = false
     @State private var showingAvatarPicker = false
+    @State private var showingPhotoPicker = false
+    @State private var selectedPhotoItem: PhotosPickerItem?
 
     private var isEditing: Bool { profile != nil }
 
@@ -23,6 +28,7 @@ struct AddEditProfileView: View {
                 ScrollView {
                     VStack(spacing: 30) {
                         avatarSection
+                        avatarTypeSelector
                         nameSection
                         kidsToggleSection
                         Spacer(minLength: 50)
@@ -54,10 +60,21 @@ struct AddEditProfileView: View {
             .sheet(isPresented: $showingAvatarPicker) {
                 AvatarPickerView(platform: platform, selectedAvatar: $selectedAvatar)
             }
+            .photosPicker(isPresented: $showingPhotoPicker, selection: $selectedPhotoItem, matching: .images)
+            .onChange(of: selectedPhotoItem) { _, newItem in
+                Task {
+                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                        avatarImageData = data
+                        avatarType = .photo
+                    }
+                }
+            }
             .onAppear {
                 if let profile = profile {
                     name = profile.name
-                    selectedAvatar = profile.avatar
+                    selectedAvatar = profile.avatarEmoji
+                    avatarType = profile.avatarType
+                    avatarImageData = profile.avatarImageData
                     isKidsProfile = profile.isKidsProfile
                 } else {
                     selectedAvatar = platform.profileAvatars.first ?? "😀"
@@ -69,15 +86,18 @@ struct AddEditProfileView: View {
     private var avatarSection: some View {
         VStack(spacing: 16) {
             Button {
-                showingAvatarPicker = true
+                if avatarType == .emoji {
+                    showingAvatarPicker = true
+                } else {
+                    showingPhotoPicker = true
+                }
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(platform.primaryColor.opacity(0.3))
                         .frame(width: 140, height: 140)
 
-                    Text(selectedAvatar)
-                        .font(.system(size: 70))
+                    avatarPreview
 
                     VStack {
                         Spacer()
@@ -94,11 +114,82 @@ struct AddEditProfileView: View {
                 .frame(width: 140, height: 140)
             }
 
-            Text("Tap to change avatar")
+            Text(avatarTypeHint)
                 .font(.caption)
                 .foregroundStyle(.white.opacity(0.6))
         }
         .padding(.top, 20)
+    }
+
+    @ViewBuilder
+    private var avatarPreview: some View {
+        switch avatarType {
+        case .emoji:
+            Text(selectedAvatar)
+                .font(.system(size: 70))
+        case .photo, .memoji:
+            if let imageData = avatarImageData,
+               let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 120, height: 120)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            } else {
+                Image(systemName: "photo")
+                    .font(.system(size: 50))
+                    .foregroundStyle(.white.opacity(0.5))
+            }
+        }
+    }
+
+    private var avatarTypeHint: String {
+        switch avatarType {
+        case .emoji: return "Tap to change emoji"
+        case .photo, .memoji: return "Tap to change photo"
+        }
+    }
+
+    private var avatarTypeSelector: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Avatar Type")
+                .font(.headline)
+                .foregroundStyle(.white)
+
+            HStack(spacing: 12) {
+                avatarTypeButton(type: .emoji, icon: "face.smiling", label: "Emoji")
+                avatarTypeButton(type: .photo, icon: "photo", label: "Photo")
+            }
+        }
+        .padding(.horizontal)
+    }
+
+    private func avatarTypeButton(type: AvatarType, icon: String, label: String) -> some View {
+        Button {
+            withAnimation {
+                avatarType = type
+            }
+            switch type {
+            case .photo, .memoji:
+                showingPhotoPicker = true
+            case .emoji:
+                showingAvatarPicker = true
+            }
+        } label: {
+            VStack(spacing: 8) {
+                Image(systemName: icon)
+                    .font(.system(size: 24))
+                Text(label)
+                    .font(.caption)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(avatarType == type ? platform.primaryColor : Color.white.opacity(0.1))
+            )
+            .foregroundStyle(avatarType == type ? .white : .white.opacity(0.7))
+        }
     }
 
     private var nameSection: some View {
@@ -152,13 +243,17 @@ struct AddEditProfileView: View {
         if let existingProfile = profile {
             var updatedProfile = existingProfile
             updatedProfile.name = trimmedName
-            updatedProfile.avatar = selectedAvatar
+            updatedProfile.avatarEmoji = selectedAvatar
+            updatedProfile.avatarType = avatarType
+            updatedProfile.avatarImageData = avatarImageData
             updatedProfile.isKidsProfile = isKidsProfile
             profileStore.updateProfile(updatedProfile)
         } else {
             let newProfile = Profile(
                 name: trimmedName,
                 avatar: selectedAvatar,
+                avatarType: avatarType,
+                avatarImageData: avatarImageData,
                 isKidsProfile: isKidsProfile,
                 platform: platform
             )

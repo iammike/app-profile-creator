@@ -42,16 +42,14 @@ struct PlatformProfileView: View {
     }
 
     private var headerView: some View {
-        VStack(spacing: 8) {
-            Text("Who's Watching?")
-                .font(.system(size: 34, weight: .medium))
-                .foregroundStyle(.white)
+        VStack(spacing: 16) {
+            PlatformLogoView(platform: platform, size: .medium)
 
-            Text(platform.displayName)
-                .font(.headline)
-                .foregroundStyle(platform.primaryColor)
+            Text(platform.isMusicPlatform ? "Who's Listening?" : (platform.isGamingPlatform ? "Who's Playing?" : "Who's Watching?"))
+                .font(.system(size: 28, weight: .medium))
+                .foregroundStyle(platform.useLightText ? .white.opacity(0.9) : .black.opacity(0.8))
         }
-        .padding(.top, 40)
+        .padding(.top, 20)
     }
 
     private var emptyStateView: some View {
@@ -62,7 +60,7 @@ struct PlatformProfileView: View {
 
             Text("No profiles yet")
                 .font(.title2)
-                .foregroundStyle(.white.opacity(0.7))
+                .foregroundStyle(platform.useLightText ? .white.opacity(0.7) : .black.opacity(0.5))
 
             Button {
                 showingAddProfile = true
@@ -83,13 +81,22 @@ struct PlatformProfileView: View {
         ScrollView {
             LazyVGrid(columns: gridColumns, spacing: 30) {
                 ForEach(profiles) { profile in
-                    ProfileCardView(profile: profile, isEditMode: isEditMode) {
-                        editingProfile = profile
-                    } onDelete: {
-                        withAnimation {
-                            profileStore.deleteProfile(profile)
+                    ProfileCardView(
+                        profile: profile,
+                        isEditMode: isEditMode,
+                        onSelect: {
+                            // Profile selected - the animation plays in the card
+                            print("Welcome, \(profile.name)!")
+                        },
+                        onEdit: {
+                            editingProfile = profile
+                        },
+                        onDelete: {
+                            withAnimation {
+                                profileStore.deleteProfile(profile)
+                            }
                         }
-                    }
+                    )
                 }
 
                 if profiles.count < 5 {
@@ -111,17 +118,17 @@ struct PlatformProfileView: View {
             VStack(spacing: 12) {
                 ZStack {
                     Circle()
-                        .stroke(Color.white.opacity(0.3), lineWidth: 2)
+                        .stroke(platform.useLightText ? Color.white.opacity(0.3) : Color.black.opacity(0.2), lineWidth: 2)
                         .frame(width: 100, height: 100)
 
                     Image(systemName: "plus")
                         .font(.system(size: 40))
-                        .foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(platform.useLightText ? .white.opacity(0.5) : .black.opacity(0.3))
                 }
 
                 Text("Add Profile")
                     .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.7))
+                    .foregroundStyle(platform.useLightText ? .white.opacity(0.7) : .black.opacity(0.5))
             }
         }
     }
@@ -134,12 +141,12 @@ struct PlatformProfileView: View {
         } label: {
             Text(isEditMode ? "Done" : "Manage Profiles")
                 .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.7))
+                .foregroundStyle(platform.useLightText ? .white.opacity(0.7) : .black.opacity(0.6))
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
-                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                        .stroke(platform.useLightText ? Color.white.opacity(0.3) : Color.black.opacity(0.2), lineWidth: 1)
                 )
         }
         .padding(.bottom, 20)

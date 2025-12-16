@@ -17,6 +17,8 @@
 		E50000012D00000000000011 /* ProfileCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000011 /* ProfileCardView.swift */; };
 		E50000012D00000000000012 /* AddEditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000012 /* AddEditProfileView.swift */; };
 		E50000012D00000000000013 /* AvatarPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000013 /* AvatarPickerView.swift */; };
+		E50000012D00000000000014 /* PlatformLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000014 /* PlatformLogoView.swift */; };
+		E50000012D00000000000016 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000016 /* SplashScreenView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		E50000002D00000000000011 /* ProfileCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCardView.swift; sourceTree = "<group>"; };
 		E50000002D00000000000012 /* AddEditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProfileView.swift; sourceTree = "<group>"; };
 		E50000002D00000000000013 /* AvatarPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPickerView.swift; sourceTree = "<group>"; };
+		E50000002D00000000000014 /* PlatformLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformLogoView.swift; sourceTree = "<group>"; };
+		E50000002D00000000000016 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		E50000002D00000000000001 /* ProfileCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProfileCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -89,6 +93,8 @@
 				E50000002D00000000000011 /* ProfileCardView.swift */,
 				E50000002D00000000000012 /* AddEditProfileView.swift */,
 				E50000002D00000000000013 /* AvatarPickerView.swift */,
+				E50000002D00000000000014 /* PlatformLogoView.swift */,
+				E50000002D00000000000016 /* SplashScreenView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -171,6 +177,8 @@
 				E50000012D00000000000011 /* ProfileCardView.swift in Sources */,
 				E50000012D00000000000012 /* AddEditProfileView.swift in Sources */,
 				E50000012D00000000000013 /* AvatarPickerView.swift in Sources */,
+				E50000012D00000000000014 /* PlatformLogoView.swift in Sources */,
+				E50000012D00000000000016 /* SplashScreenView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

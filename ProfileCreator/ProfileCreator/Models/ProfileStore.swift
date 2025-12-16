@@ -6,9 +6,27 @@ class ProfileStore: ObservableObject {
     @Published var profiles: [Profile] = []
 
     private let saveKey = "savedProfiles"
+    private let iCloud = NSUbiquitousKeyValueStore.default
 
     init() {
+        // Listen for iCloud changes from other devices
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(iCloudDidChange),
+            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+            object: iCloud
+        )
+
+        // Sync with iCloud
+        iCloud.synchronize()
+
         loadProfiles()
+    }
+
+    @objc private func iCloudDidChange(_ notification: Notification) {
+        Task { @MainActor in
+            loadProfiles()
+        }
     }
 
     func profiles(for platform: StreamingPlatform) -> [Profile] {
@@ -40,16 +58,30 @@ class ProfileStore: ObservableObject {
         }
     }
 
+    func deleteAllProfiles() {
+        profiles.removeAll()
+        saveProfiles()
+    }
+
     private func saveProfiles() {
         if let encoded = try? JSONEncoder().encode(profiles) {
+            // Save to both UserDefaults (local backup) and iCloud
             UserDefaults.standard.set(encoded, forKey: saveKey)
+            iCloud.set(encoded, forKey: saveKey)
+            iCloud.synchronize()
         }
     }
 
     private func loadProfiles() {
-        if let data = UserDefaults.standard.data(forKey: saveKey),
+        // Prefer iCloud data, fall back to local UserDefaults
+        if let data = iCloud.data(forKey: saveKey),
            let decoded = try? JSONDecoder().decode([Profile].self, from: data) {
             profiles = decoded
+        } else if let data = UserDefaults.standard.data(forKey: saveKey),
+                  let decoded = try? JSONDecoder().decode([Profile].self, from: data) {
+            profiles = decoded
+            // Sync local data to iCloud
+            saveProfiles()
         }
     }
 }
