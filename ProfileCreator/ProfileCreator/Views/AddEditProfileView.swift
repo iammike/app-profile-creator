@@ -19,6 +19,18 @@ struct AddEditProfileView: View {
 
     private var isEditing: Bool { profile != nil }
 
+    private var textColor: Color {
+        platform.useLightText ? .white : .black
+    }
+
+    private var secondaryTextColor: Color {
+        platform.useLightText ? .white.opacity(0.6) : .black.opacity(0.5)
+    }
+
+    private var fieldBackgroundColor: Color {
+        platform.useLightText ? Color.white.opacity(0.1) : Color.black.opacity(0.05)
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -30,7 +42,9 @@ struct AddEditProfileView: View {
                         avatarSection
                         avatarTypeSelector
                         nameSection
-                        kidsToggleSection
+                        if !platform.isKidsPlatform {
+                            kidsToggleSection
+                        }
                         Spacer(minLength: 50)
                     }
                     .padding()
@@ -40,13 +54,13 @@ struct AddEditProfileView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(platform.backgroundColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
+            .toolbarColorScheme(platform.useLightText ? .dark : .light, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         dismiss()
                     }
-                    .foregroundStyle(.white)
+                    .foregroundStyle(textColor)
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
@@ -116,7 +130,7 @@ struct AddEditProfileView: View {
 
             Text(avatarTypeHint)
                 .font(.caption)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(secondaryTextColor)
         }
         .padding(.top, 20)
     }
@@ -138,7 +152,7 @@ struct AddEditProfileView: View {
             } else {
                 Image(systemName: "photo")
                     .font(.system(size: 50))
-                    .foregroundStyle(.white.opacity(0.5))
+                    .foregroundStyle(secondaryTextColor)
             }
         }
     }
@@ -154,7 +168,7 @@ struct AddEditProfileView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Avatar Type")
                 .font(.headline)
-                .foregroundStyle(.white)
+                .foregroundStyle(textColor)
 
             HStack(spacing: 12) {
                 avatarTypeButton(type: .emoji, icon: "face.smiling", label: "Emoji")
@@ -186,9 +200,9 @@ struct AddEditProfileView: View {
             .padding(.vertical, 16)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(avatarType == type ? platform.primaryColor : Color.white.opacity(0.1))
+                    .fill(avatarType == type ? platform.primaryColor : fieldBackgroundColor)
             )
-            .foregroundStyle(avatarType == type ? .white : .white.opacity(0.7))
+            .foregroundStyle(avatarType == type ? .white : textColor.opacity(0.7))
         }
     }
 
@@ -196,16 +210,16 @@ struct AddEditProfileView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Name")
                 .font(.headline)
-                .foregroundStyle(.white)
+                .foregroundStyle(textColor)
 
             TextField("Enter name", text: $name)
                 .textFieldStyle(.plain)
                 .font(.title3)
-                .foregroundStyle(.white)
+                .foregroundStyle(textColor)
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.white.opacity(0.1))
+                        .fill(fieldBackgroundColor)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
@@ -220,18 +234,18 @@ struct AddEditProfileView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Kids Profile")
                     .font(.headline)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(textColor)
 
                 Text("This profile will only show content rated for children")
                     .font(.caption)
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(secondaryTextColor)
             }
         }
         .tint(platform.primaryColor)
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white.opacity(0.05))
+                .fill(fieldBackgroundColor)
         )
         .padding(.horizontal)
     }
@@ -254,7 +268,7 @@ struct AddEditProfileView: View {
                 avatar: selectedAvatar,
                 avatarType: avatarType,
                 avatarImageData: avatarImageData,
-                isKidsProfile: isKidsProfile,
+                isKidsProfile: platform.isKidsPlatform || isKidsProfile,
                 platform: platform
             )
             profileStore.addProfile(newProfile)
