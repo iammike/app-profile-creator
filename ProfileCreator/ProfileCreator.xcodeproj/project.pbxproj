@@ -17,9 +17,12 @@
 		E50000012D00000000000011 /* ProfileCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000011 /* ProfileCardView.swift */; };
 		E50000012D00000000000012 /* AddEditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000012 /* AddEditProfileView.swift */; };
 		E50000012D00000000000013 /* AvatarPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000013 /* AvatarPickerView.swift */; };
+		E50000012D00000000000014 /* PlatformLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000014 /* PlatformLogoView.swift */; };
+		E50000012D00000000000016 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50000002D00000000000016 /* SplashScreenView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E50000002D00000000000001 /* ProfileCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProfileCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50000002D0000000000000A /* ProfileCreatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCreatorApp.swift; sourceTree = "<group>"; };
 		E50000002D0000000000000B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E50000002D0000000000000C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -30,7 +33,8 @@
 		E50000002D00000000000011 /* ProfileCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCardView.swift; sourceTree = "<group>"; };
 		E50000002D00000000000012 /* AddEditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProfileView.swift; sourceTree = "<group>"; };
 		E50000002D00000000000013 /* AvatarPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPickerView.swift; sourceTree = "<group>"; };
-		E50000002D00000000000001 /* ProfileCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProfileCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E50000002D00000000000014 /* PlatformLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformLogoView.swift; sourceTree = "<group>"; };
+		E50000002D00000000000016 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,8 @@
 				E50000002D00000000000011 /* ProfileCardView.swift */,
 				E50000002D00000000000012 /* AddEditProfileView.swift */,
 				E50000002D00000000000013 /* AvatarPickerView.swift */,
+				E50000002D00000000000014 /* PlatformLogoView.swift */,
+				E50000002D00000000000016 /* SplashScreenView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -171,6 +177,8 @@
 				E50000012D00000000000011 /* ProfileCardView.swift in Sources */,
 				E50000012D00000000000012 /* AddEditProfileView.swift in Sources */,
 				E50000012D00000000000013 /* AvatarPickerView.swift in Sources */,
+				E50000012D00000000000014 /* PlatformLogoView.swift in Sources */,
+				E50000012D00000000000016 /* SplashScreenView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,9 +309,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = 9ED5E567X5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Profile Creator";
@@ -317,8 +326,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.iammike.ProfileCreator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iammike.ServiceProfileCreator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -332,9 +342,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = 9ED5E567X5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Profile Creator";
@@ -348,8 +359,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.iammike.ProfileCreator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iammike.ServiceProfileCreator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
