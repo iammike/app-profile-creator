@@ -30,15 +30,14 @@ struct ProfileCardView: View {
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 24))
-                            .foregroundStyle(.white, .red)
+                            .foregroundStyle(.white, profile.platform.primaryColor)
                     }
                     .opacity(isEditMode ? 1 : 0)
                 }
                 .overlay(alignment: .topTrailing) {
                     Image(systemName: "pencil.circle.fill")
                         .font(.system(size: 24))
-                        .foregroundStyle(profile.platform.primaryColor)
-                        .background(Circle().fill(.white).padding(4))
+                        .foregroundStyle(.white, profile.platform.primaryColor)
                         .opacity(isEditMode ? 1 : 0)
                 }
 
