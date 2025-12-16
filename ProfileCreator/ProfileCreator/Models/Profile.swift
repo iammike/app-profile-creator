@@ -36,10 +36,4 @@ struct Profile: Identifiable, Codable, Equatable {
         self.platform = platform
         self.createdAt = createdAt
     }
-
-    // Backwards compatibility
-    var avatar: String {
-        get { avatarEmoji }
-        set { avatarEmoji = newValue }
-    }
 }

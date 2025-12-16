@@ -18,26 +18,35 @@ struct ProfileCardView: View {
                 triggerSelectAnimation()
             }
         } label: {
-            VStack(spacing: 12) {
-                ZStack(alignment: .topTrailing) {
+            VStack(spacing: 0) {
+                ZStack {
                     avatarView
-
-                    if isEditMode {
-                        editBadge
+                        .padding(.top, 12)
+                        .padding(.horizontal, 12)
+                }
+                .overlay(alignment: .topLeading) {
+                    Button {
+                        onDelete()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundStyle(.white, .red)
                     }
+                    .opacity(isEditMode ? 1 : 0)
+                }
+                .overlay(alignment: .topTrailing) {
+                    Image(systemName: "pencil.circle.fill")
+                        .font(.system(size: 24))
+                        .foregroundStyle(profile.platform.primaryColor)
+                        .background(Circle().fill(.white).padding(4))
+                        .opacity(isEditMode ? 1 : 0)
                 }
 
                 nameLabel
+                    .padding(.top, 6)
             }
-            .padding(.top, isEditMode ? 12 : 0)
-            .padding(.horizontal, isEditMode ? 12 : 0)
         }
         .buttonStyle(ProfileButtonStyle())
-        .overlay(alignment: .topLeading) {
-            if isEditMode {
-                deleteButton
-            }
-        }
         .overlay {
             if showConfetti {
                 ConfettiView(color: profile.platform.primaryColor)
@@ -116,25 +125,6 @@ struct ProfileCardView: View {
                     .padding(4)
             }
         }
-    }
-
-    private var editBadge: some View {
-        Image(systemName: "pencil.circle.fill")
-            .font(.system(size: 24))
-            .foregroundStyle(profile.platform.primaryColor)
-            .background(Circle().fill(.white).padding(4))
-            .offset(x: 8, y: -8)
-    }
-
-    private var deleteButton: some View {
-        Button {
-            onDelete()
-        } label: {
-            Image(systemName: "xmark.circle.fill")
-                .font(.system(size: 24))
-                .foregroundStyle(.white, .red)
-        }
-        .offset(x: -8, y: -8)
     }
 
     private var nameLabel: some View {

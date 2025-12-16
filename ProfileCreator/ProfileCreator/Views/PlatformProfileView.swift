@@ -31,7 +31,7 @@ struct PlatformProfileView: View {
                     editButton
                 }
             }
-            .padding()
+            .padding(.vertical)
         }
         .sheet(isPresented: $showingAddProfile) {
             AddEditProfileView(platform: platform, profile: nil)
@@ -103,8 +103,10 @@ struct PlatformProfileView: View {
                     addProfileButton
                 }
             }
-            .padding(.horizontal)
+            .padding(.leading, 36)
+            .padding(.trailing, 24)
         }
+        .scrollClipDisabled()
     }
 
     private var gridColumns: [GridItem] {
@@ -115,7 +117,7 @@ struct PlatformProfileView: View {
         Button {
             showingAddProfile = true
         } label: {
-            VStack(spacing: 12) {
+            VStack(spacing: 0) {
                 ZStack {
                     Circle()
                         .stroke(platform.useLightText ? Color.white.opacity(0.3) : Color.black.opacity(0.2), lineWidth: 2)
@@ -125,10 +127,13 @@ struct PlatformProfileView: View {
                         .font(.system(size: 40))
                         .foregroundStyle(platform.useLightText ? .white.opacity(0.5) : .black.opacity(0.3))
                 }
+                .padding(.top, 12)
+                .padding(.horizontal, 12)
 
                 Text("Add Profile")
                     .font(.subheadline)
                     .foregroundStyle(platform.useLightText ? .white.opacity(0.7) : .black.opacity(0.5))
+                    .padding(.top, 6)
             }
         }
     }

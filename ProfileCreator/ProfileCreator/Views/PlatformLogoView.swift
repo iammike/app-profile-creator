@@ -237,6 +237,7 @@ struct PlatformLogoView: View {
         HStack(spacing: 4) {
             Text("🦚")
                 .font(.system(size: size.fontSize * 0.7))
+                .accessibilityLabel("Peacock logo")
             Text("Peacock")
                 .font(.system(size: size.fontSize * 0.8, weight: .bold, design: .default))
         }
